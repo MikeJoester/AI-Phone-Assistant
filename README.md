@@ -1,97 +1,59 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🤖 On-Device AI Chat Assistant
 
-# Getting Started
+An absolutely private, fully on-device AI Assistant built with React Native and Native Android Kotlin. 
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+This application uses Android's Accessibility Services to invisibly read incoming chat messages (such as Discord) and process them through a local LLM running entirely on your phone's hardware. It features a custom floating UI overlay, a native Android file picker for dynamic model swapping, and automatic clipboard injection to seamlessly paste generated replies back into your chat.
 
-## Step 1: Start Metro
+Because the AI runs 100% locally on your device's CPU/GPU via `llama.rn`, your private chat logs are never sent to a cloud server or external API.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## ⚙️ Software Requirements
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+To build and run this project locally, your development environment must meet the following requirements:
 
-```sh
-# Using npm
-npm start
+*   **Node.js**: v22.11.0 or newer
+*   **Java Development Kit (JDK)**: JDK 17
+*   **Android SDK**: API Level 33 or higher (Targeting Android 13+)
+*   **Android NDK**: Required for compiling the C++ `llama.cpp` backend (auto-installed via Gradle).
+*   **React Native CLI**: v0.86.0
+*   **LLM Model**: A downloaded `.gguf` format AI model (e.g., `gemma-2b-it.gguf`). Must fit within your phone's available RAM.
 
-# OR using Yarn
-yarn start
+## 🚀 Full Installation Guide
+
+Follow these steps to clone the repository, install dependencies, and run the app on an Android emulator or physical device.
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/MikeJoester/AI-Phone-Assistant.git
+cd AI-Phone-Assistant
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+### 2. Install Dependencies
+```bash
+npm install
 ```
 
-### iOS
+### 3. Prepare the AI Model
+1. Download an instruction-tuned model in `.gguf` format (e.g., from HuggingFace).
+2. Transfer the `.gguf` file to your Android phone or emulator. The easiest location is directly in your device's root `Downloads` folder.
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+### 4. Build and Run the App
+Ensure your Android device is plugged in via USB (with USB Debugging enabled) or your Android Emulator is running.
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+**To run the debug development server:**
+```bash
+npx react-native start
+npx react-native run-android
 ```
 
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
+**To build a standalone Release APK (Recommended for performance):**
+```bash
+cd android
+./gradlew assembleRelease
 ```
+*You can then install the resulting `app-release.apk` located in `android/app/build/outputs/apk/release/`.*
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+### 5. Post-Installation Device Setup
+When you launch the application for the first time, you must grant it three critical Android permissions for it to function:
+1.  **All Files Access / Storage**: Required to locate and load the massive 3GB+ `.gguf` model file from your file system.
+2.  **Display Over Other Apps**: Required to render the floating `🤖 Draft AI` trigger button and the Accept/Reject overlay over your chat apps.
+3.  **Accessibility Services**: You must manually navigate to your phone's Accessibility Settings and enable the service for the AI Assistant. This allows the app to read incoming text and perform the `PASTE` gesture to inject replies.
