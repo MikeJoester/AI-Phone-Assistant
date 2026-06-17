@@ -15,7 +15,20 @@ To build and run this project locally, your development environment must meet th
 *   **Android SDK**: API Level 33 or higher (Targeting Android 13+)
 *   **Android NDK**: Required for compiling the C++ `llama.cpp` backend (auto-installed via Gradle).
 *   **React Native CLI**: v0.86.0
-*   **LLM Model**: A downloaded `.gguf` format AI model (e.g., `gemma-2b-it.gguf`). Must fit within your phone's available RAM.
+*   **LLM Model**: A downloaded `.gguf` format AI model (must fit within your phone's available RAM).
+
+## 🧠 Tested AI Model Specifications
+
+The application was built, tested, and optimized using the following specific model configuration:
+
+*   **Model Name**: `gemma-4-E2B-it-Q4_K_M.gguf`
+*   **Base Family**: Gemma 4 E2B
+*   **Format**: GGUF v3
+*   **Quantization**: `Q4_K_M` (quantized via [Unsloth.ai](https://unsloth.ai))
+*   **Mode**: Text-only language model
+*   **Tensor Count**: 601
+*   **Size**: ~3.11 GB
+*   **Chat Template**: Embedded Gemma 4 template
 
 ## 🚀 Full Installation Guide
 
